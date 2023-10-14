@@ -1,0 +1,369 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/KINGHUB01/KING-HUB-NO-1/main/Ui", true))()
+local NotificationHolder = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua"))()
+local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua"))()
+
+local PepsiUi = library:CreateWindow({
+    Name = "KING HUB | Endless Doors",
+    Theme = {
+        Image = "rbxassetid://7483871523",
+        Info = "Info",
+        Background = {
+            Asset = "rbxassetid://11677001091"
+        }
+    }
+})
+
+local Page = PepsiUi:CreateTab({
+    Name = "Main"
+})
+
+local TestTab = Page:CreateSection({
+    Name = "LocalPlayer", -- ชื่อ
+    Side = "Left" -- ตำแหน่ง Left/Right
+})
+TestTab:AddSlider({
+	Name = "Slider",
+	Value = 35, -- ค่าที่ให้เลือก
+	Min = 26, -- น้อยสุด
+	Max = 50, -- มากสุด
+    Textbox = true,
+	Format = "RunSpeed : %s%%",
+	Callback = function(abc)
+    Select = abc
+	end
+})
+
+TestTab:AddToggle({
+    Name = "Set RunSpeed",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(RunSpeed)
+        if RunSpeed then
+_G.RunSpeeds = true
+while _G.RunSpeeds do wait()
+    pcall(function()
+game.Players.LocalPlayer.PlayerGui.MainGUI.Values.Runspeed.Value = Select
+    end)
+ end
+        else
+_G.RunSpeeds = false
+while _G.RunSpeeds do wait()
+    pcall(function()
+game.Players.LocalPlayer.PlayerGui.MainGUI.Values.Runspeed.Value = Select
+    end)
+ end
+wait(0.5)
+game.Players.LocalPlayer.PlayerGui.MainGUI.Values.Runspeed.Value = 26
+        end
+    end
+})
+TestTab:AddToggle({
+    Name = "Noclip",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(noclip)
+_G.noclips = noclip
+while _G.noclips do
+    pcall(function()
+	game:GetService("RunService").Stepped:wait()
+	game.Players.LocalPlayer.Character.Head.CanCollide = false
+	game.Players.LocalPlayer.Character.Torso.CanCollide = false
+    end)
+ end
+    end
+})
+local TestTab = Page:CreateSection({
+    Name = "ESP", -- ชื่อ
+    Side = "Left" -- ตำแหน่ง Left/Right
+})
+
+function isnil(thing)
+    return (thing == nil)
+end
+local function round(n)
+    return math.floor(tonumber(n) + 0.5)
+end
+Number = math.random(1, 1000000)
+function UpdatePlayerChams()
+    for i,v in pairs(game:GetService'Players':GetChildren()) do
+        pcall(function()
+            if not isnil(v.Character) then
+                if ESPPlayer then
+                    if not isnil(v.Character.Head) and not v.Character.Head:FindFirstChild('NameEsp'..Number) then
+                        local bill = Instance.new('BillboardGui',v.Character.Head)
+                        bill.Name = 'NameEsp'..Number
+                        bill.ExtentsOffset = Vector3.new(0, 1, 0)
+                        bill.Size = UDim2.new(1,200,1,30)
+                        bill.Adornee = v.Character.Head
+                        bill.AlwaysOnTop = true
+                        local name = Instance.new('TextLabel',bill)
+                        name.Font = "SourceSansBold"
+                        name.FontSize = "Size14"
+                        name.TextWrapped = true
+                        name.Text = (v.Name ..' \n'.. round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Character.Head.Position).Magnitude/3) ..' M')
+                        name.Size = UDim2.new(1,0,1,0)
+                        name.TextYAlignment = 'Top'
+                        name.BackgroundTransparency = 1
+                        name.TextStrokeTransparency = 0.5
+                        if v.Team == game.Players.LocalPlayer.Team then
+                            name.TextColor3 = Color3.new(102, 255, 153)
+                        else
+                            name.TextColor3 = Color3.new(102, 255, 153)
+                        end
+                    else
+                        v.Character.Head['NameEsp'..Number].TextLabel.Text = (v.Name ..'   \n'.. round((game:GetService('Players').LocalPlayer.Character.Head.Position - v.Character.Head.Position).Magnitude/3) ..' M')
+                    end
+                else
+                    if v.Character.Head:FindFirstChild('NameEsp'..Number) then
+                        v.Character.Head:FindFirstChild('NameEsp'..Number):Destroy()
+                    end
+                end
+            end
+        end)
+    end
+end
+
+TestTab:AddToggle({
+    Name = "Players [Name]",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(PLAYER)
+    ESPPlayer = PLAYER
+    while ESPPlayer do wait()
+        UpdatePlayerChams()
+    end
+    end
+})
+TestTab:AddToggle({
+    Name = "Players",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(ESPPLAYER)
+getgenv().enabled = ESPPLAYER --Toggle on/off
+getgenv().filluseteamcolor = false --Toggle fill color using player team color on/off
+getgenv().outlineuseteamcolor = false --Toggle outline color using player team color on/off
+getgenv().fillcolor = Color3.new(0, 0, 0) --Change fill color, no need to edit if using team color
+getgenv().outlinecolor = Color3.new(1, 1, 1) --Change outline color, no need to edit if using team color
+getgenv().filltrans = 0 --Change fill transparency
+getgenv().outlinetrans = 0 --Change outline transparency
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/zntly/highlight-esp/main/esp.lua"))()
+    end
+})
+
+local TestTab = Page:CreateSection({
+    Name = "Main", -- ชื่อ
+    Side = "Right" -- ตำแหน่ง Left/Right
+})
+TestTab:AddToggle({
+    Name = "FullBright",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(v)
+        if v then
+            game:GetService("Lighting").Brightness = 2
+            game:GetService("Lighting").ClockTime = 14
+            game:GetService("Lighting").FogEnd = 100000
+            game:GetService("Lighting").GlobalShadows = false
+            game:GetService("Lighting").OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+        else
+            game:GetService("Lighting").Brightness = 3
+            game:GetService("Lighting").ClockTime = 20
+            game:GetService("Lighting").FogEnd = 1.1111111533265e+16
+            game:GetService("Lighting").GlobalShadows = true
+            game:GetService("Lighting").OutdoorAmbient = Color3.fromRGB(0.5, 0.5, 0.5)
+        end
+    end
+})
+TestTab:AddToggle({
+    Name = "Infinite Flashlight Battery",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(Battery)
+_G.Batterys = Battery
+while _G.Batterys do wait()
+    pcall(function()
+game.Players.LocalPlayer.PlayerGui.MainGUI.Values.FlashlightBattery.Value = 125
+    end)
+ end
+    end
+})
+TestTab:AddToggle({
+    Name = "DoubleBits (Beta)",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(DoubleBit)
+        if DoubleBit then
+_G.DoubleBit2s = true
+while _G.DoubleBit2s do wait()
+    pcall(function()
+game.Players.LocalPlayer.Character.Values.DoubleBits.Value = true
+    end)
+ end
+        else
+_G.DoubleBit2s = false
+while _G.DoubleBit2s do wait()
+    pcall(function()
+game.Players.LocalPlayer.Character.Values.DoubleBits.Value = true
+    end)
+ end
+wait()
+game.Players.LocalPlayer.Character.Values.DoubleBits.Value = false
+        end
+    end
+})
+
+TestTab:AddToggle({
+    Name = "Infinite Stamina",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(Stamina)
+_G.Staminas = Stamina
+while _G.Staminas do wait()
+    pcall(function()
+game.Players.LocalPlayer.PlayerGui.MainGUI.Values.Stamina.Value = 100
+    end)
+ end
+    end
+})
+
+TestTab:AddToggle({
+    Name = "No E wait",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(noEwait)
+        getgenv().noEwaits = noEwait
+        PromptButtonHoldBegan = game:GetService("ProximityPromptService").PromptButtonHoldBegan:Connect(function(prompt)
+            if getgenv().noEwaits then
+			fireproximityprompt(prompt)
+            end
+		end)
+    end
+})
+TestTab:AddToggle({
+    Name = "Event notifiers",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(notifier)
+_G.notifiers = notifier
+    
+        task.spawn(function()
+        game.Workspace.Game.Entities.ChildAdded:Connect(function(v)
+                    if _G.notifiers then
+            if v:IsA("Model") then
+Notification:Notify(
+    {Title = "KING HUB Notification", Description = v.Name.. " Spawn Hide!"},
+    {OutlineColor = Color3.fromRGB(80, 80, 80),Time = 5, Type = "image"},
+    {Image = "http://www.roblox.com/asset/?id=11677001091", ImageColor = Color3.fromRGB(255, 255, 255)}
+)
+            end
+           end
+        end)
+    end)
+    end
+})
+TestTab:AddToggle({
+    Name = "Infinite Jump",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(Jumpss)
+local function InfJump(set)
+    if set.KeyCode == Enum.KeyCode.Space then
+        game.Players.LocalPlayer.Character.Humanoid:ChangeState(3)
+    end
+end
+    _G.Infjumpe = Jumpss
+   if _G.Infjumpe then
+_G.Jump  = game:GetService("UserInputService").InputBegan:connect(InfJump)
+	else
+_G.Jump:Disconnect()
+end
+    end
+})
+
+local TestTab = Page:CreateSection({
+    Name = "Bypass", -- ชื่อ
+    Side = "Right" -- ตำแหน่ง Left/Right
+})
+TestTab:AddToggle({
+    Name = "Bypass Fall Damage",
+	Value = _G.ConfigToggle, -- ปรับค่าToggle true/false or Config
+    Callback = function(Fall)
+        if Fall then
+_G.Fall2s = true
+while _G.Fall2s do wait()
+    pcall(function()
+game.Players.LocalPlayer.Character.FDMG.Multiplier.Value = 0
+    end)
+ end
+        else
+_G.Fall2s = false
+while _G.Fall2s do wait()
+    pcall(function()
+game.Players.LocalPlayer.Character.FDMG.Multiplier.Value = 0
+    end)
+ end
+wait()
+game.Players.LocalPlayer.Character.FDMG.Multiplier.Value = 3
+        end
+    end
+})
+
+TestTab:AddToggle({
+    Name = "Bypass Hide [Hide Only]",
+Keybind = {
+Mode = "G"
+},
+    Callback = function()
+        if game.Players.LocalPlayer.Character.Hiding.Value == true then
+game.Players.LocalPlayer.Character.Hiding.Value = false
+        elseif game.Players.LocalPlayer.Character.Hiding.Value == false then
+game.Players.LocalPlayer.Character.Hiding.Value = true
+        end
+    end
+})
+TestTab:AddButton({
+    Name = "Bypass Eyes Damage",
+    Callback = function()
+
+local __namecall
+__namecall = hookmetamethod(game, "__namecall", function(self, ...)
+    if not checkcaller() then
+        if getnamecallmethod() == "FireServer" then
+
+            if tostring(self) == "DMG" then
+                local args = {...}
+                args[1] = 0
+
+                return __namecall(self, unpack(args))
+            end
+
+            if tostring(self) == "FALLEN_SEE" then
+                local args = {...}
+                args[1] = false
+
+                return __namecall(self, unpack(args))
+            end
+
+        end
+
+        if getnamecallmethod() == "Kick" and self == game.Players.LocalPlayer then
+            return wait(9e9)
+        end
+    end
+
+    return __namecall(self, ...)
+end)
+
+    end
+})
+
+local TestTab = Page:CreateSection({
+    Name = "Time", -- ชื่อ
+    Side = "Left" -- ตำแหน่ง Left/Right
+})
+
+local LabelByNino = TestTab:AddLabel({
+    Name = "Time"
+})
+A = 0
+spawn(function()
+    while wait() do
+        pcall(function()
+			A = A +1
+            LabelByNino:Set(A)
+			wait(1)
+        end)
+    end
+end)
+
+return library, library_flags, library.subs
